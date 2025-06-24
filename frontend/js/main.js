@@ -150,9 +150,11 @@ function renderCards(container, items) {
       ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
       : 'https://via.placeholder.com/160x240?text=No+Image';
     const inList = isInWatchlist(item);
+    const rating = item.vote_average ? `<span class='rating'>⭐ ${item.vote_average}</span>` : '';
     return `<div class="card">
       <img src="${img}" alt="${title}">
       <h3>${title}</h3>
+      ${rating}
       <p>${item.release_date || item.first_air_date || ''}</p>
       <button class="watchlist-btn" style="background:${inList ? '#2ecc40' : '#e50914'}">${inList ? 'Remove from Watchlist' : 'Add to Watchlist'}</button>
     </div>`;

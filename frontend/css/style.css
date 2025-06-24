@@ -126,4 +126,14 @@ main {
 .remove-btn { background: #e50914; }
 .watched-btn { background: #2ecc40; }
 .watched-btn[style*='e50914'] { background: #e50914 !important; }
-.card .watchlist-btn, .card .remove-btn, .card .watched-btn { width: 90%; margin: 0.2rem auto; display: block; } 
+.card .watchlist-btn, .card .remove-btn, .card .watched-btn { width: 90%; margin: 0.2rem auto; display: block; }
+.rating {
+  display: inline-block;
+  background: #333;
+  color: #ffd700;
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  margin: 0.2rem 0;
+  font-weight: bold;
+  font-size: 1rem;
+} 
