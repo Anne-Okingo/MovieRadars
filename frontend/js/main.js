@@ -50,3 +50,19 @@ const debouncedSearch = debounce((query) => {
     resultsSection.style.display = 'none';
   }
 }, 400);
+
+// Fetch trending content
+async function fetchTrending() {
+  trendingList.innerHTML = '<div class="loading">Loading...</div>';
+  try {
+    const res = await fetch(`${API_BASE}/trending`);
+    if (!res.ok) throw new Error('Failed to fetch trending');
+    const data = await res.json();
+    renderCards(trendingList, data.results || []);
+  } catch (err) {
+    trendingList.innerHTML = `<div class="error">${err.message}</div>`;
+  }
+}
+
+// Initial trending fetch
+fetchTrending();
