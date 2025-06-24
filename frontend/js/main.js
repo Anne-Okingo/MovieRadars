@@ -103,3 +103,35 @@ function removeFromWatchlist(item) {
   saveWatchlist(list);
   renderWatchlist();
 }
+
+function renderWatchlist() {
+  const list = getWatchlist();
+  if (!list.length) {
+    watchlistList.innerHTML = '<div class="empty">Your watchlist is empty.</div>';
+    return;
+  }
+  watchlistList.innerHTML = list.map(item => {
+    const title = item.title || item.name || 'Untitled';
+    const img = item.poster_path
+      ? `https://image.tmdb.org/t/p/w300${item.poster_path}`
+      : 'https://via.placeholder.com/160x240?text=No+Image';
+    return `<div class="card">
+      <img src="${img}" alt="${title}">
+      <h3>${title}</h3>
+      <p>${item.release_date || item.first_air_date || ''}</p>
+      <button class="remove-btn">Remove</button>
+      <button class="watched-btn" style="background:${item.watched ? '#2ecc40' : '#e50914'}">${item.watched ? 'Watched' : 'Mark as Watched'}</button>
+    </div>`;
+  }).join('');
+  
+  // Add handlers
+  Array.from(watchlistList.getElementsByClassName('remove-btn')).forEach((btn, i) => {
+    btn.onclick = () => removeFromWatchlist(list[i]);
+  });
+  Array.from(watchlistList.getElementsByClassName('watched-btn')).forEach((btn, i) => {
+    btn.onclick = () => toggleWatched(list[i]);
+  });
+}
+
+// On load, render watchlist
+renderWatchlist();
