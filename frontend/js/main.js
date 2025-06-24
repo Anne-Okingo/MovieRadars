@@ -7,3 +7,46 @@ const searchInput = document.getElementById('search-input');
 
 // API config
 const API_BASE = 'http://localhost:8080/api';
+
+// Debounce helper
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
+// Fetch search results
+async function fetchSearch(query, page = 1) {
+  resultsList.innerHTML = '<div class="loading">Searching...</div>';
+  try {
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&page=${page}`);
+    if (!res.ok) throw new Error('Search failed');
+    const data = await res.json();
+    const tmdbResults = (data.tmdb && data.tmdb.results) || [];
+    renderCards(resultsList, tmdbResults);
+    resultsSection.style.display = 'block';
+  } catch (err) {
+    resultsList.innerHTML = `<div class="error">${err.message}</div>`;
+  }
+}
+
+// Search form event
+searchForm.addEventListener('submit', e => {
+  e.preventDefault();
+  debouncedSearch(searchInput.value);
+});
+
+// Real-time search
+searchInput.addEventListener('input', e => {
+  debouncedSearch(e.target.value);
+});
+
+const debouncedSearch = debounce((query) => {
+  if (query.trim()) {
+    fetchSearch(query);
+  } else {
+    resultsSection.style.display = 'none';
+  }
+}, 400);
