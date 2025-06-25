@@ -34,13 +34,17 @@ func main() {
 
 func handleSearch(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("q")
+	page := r.URL.Query().Get("page")
 	if query == "" {
 		http.Error(w, "Missing search query", http.StatusBadRequest)
 		return
 	}
+	if page == "" {
+		page = "1"
+	}
 
-	// TMDB search
-	tmdbURL := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s", tmdbAPIKey, query)
+	// TMDB search with pagination
+	tmdbURL := fmt.Sprintf("https://api.themoviedb.org/3/search/multi?api_key=%s&query=%s&page=%s", tmdbAPIKey, query, page)
 	tmdbResp, err := http.Get(tmdbURL)
 	if err != nil {
 		http.Error(w, "TMDB request failed", http.StatusBadGateway)
