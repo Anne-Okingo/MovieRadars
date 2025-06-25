@@ -31,23 +31,37 @@ git clone https://github.com/Anne-Okingo/MovieRadars.git
 cd MovieRadars
 ```
 
-### 2. Set API Keys
-Get your API keys from [TMDB](https://www.themoviedb.org/) and [OMDB](https://www.omdbapi.com/apikey.aspx).Then create a .env file in the backend directory
+### 2. Get API Keys
+Get your API keys from [TMDB](https://www.themoviedb.org/) and [OMDB](https://www.omdbapi.com/apikey.aspx).
 
+### 3. Set API Keys as Environment Variables
+**Important:** The backend reads API keys from environment variables. You must export them in your shell before running the backend. You can do this directly, or by using a `.env` file and loading it manually.
+
+#### Option A: Export directly in your shell
 ```bash
 export TMDB_API_KEY=your_tmdb_api_key
 export OMDB_API_KEY=your_omdb_api_key
 ```
 
-### 3. Start the Backend (serves API and frontend)
+#### Option B: Use a `.env` file (optional, requires manual loading)
+Create a file named `.env` in the `backend` directory with the following content (no `export` keyword):
+```
+TMDB_API_KEY=your_tmdb_api_key
+OMDB_API_KEY=your_omdb_api_key
+```
+Then, load it in your shell before running the backend:
+```bash
+export $(grep -v '^#' .env | xargs)
+```
+
+### 4. Start the Backend (serves API and frontend)
 ```bash
 cd backend
-touch .env
 go run .
 ```
 You should see: `Backend running on :8080...`
 
-### 4. Open the App
+### 5. Open the App
 Go to [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## API Endpoints
